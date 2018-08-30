@@ -1,7 +1,11 @@
 import express from 'express'
 import db from '../db/db'
+import cors from '../src/middlewares/cors'
 
 const router = express.Router()
+
+const preflight = require('./middlewares/preflight')
+app.use(cors, preflight)
 
 router.get('/api/v1/getUsers', (req, res) => {
   res.status(200).send({
@@ -14,6 +18,8 @@ router.get('/api/v1/getUsers', (req, res) => {
 router.post('/api/v1/login', (req, res) => {
   let { username, password } = req.body
   try {
+    console.log('username', username)
+    console.log('password', password)
     if (!username) {
       return res.status(400).send({
         success: 'false',

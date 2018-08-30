@@ -1,7 +1,8 @@
 import express from 'express'
 import bodyParser from 'body-parser'
-import router from './routes/index.js'
-import { parse } from 'url'
+import router from './routes/route.js'
+import cors from './src/middlewares/cors'
+import preflight from './src/middlewares/preflight'
 
 //set up the express app
 const APP = express()
@@ -13,6 +14,7 @@ APP.use(
     extended: false
   })
 )
+APP.use(cors, preflight)
 APP.use(router)
 
 const PORT = 5000
