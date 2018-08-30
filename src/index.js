@@ -1,11 +1,7 @@
 import express from 'express'
 import db from '../db/db'
-import cors from '../src/middlewares/cors'
 
 const router = express.Router()
-
-const preflight = require('./middlewares/preflight')
-app.use(cors, preflight)
 
 router.get('/api/v1/getUsers', (req, res) => {
   res.status(200).send({
