@@ -1,21 +1,32 @@
 import express from 'express'
 import db from '../db/db'
+import user from './user'
 
 const router = express.Router()
 
-router.get('/api/v1/getUsers', (req, res) => {
+router.get('/api/v1/getUsers', async (req, res) => {
   res.status(200).send({
     success: 'true',
     message: 'get users successfully',
-    users: db
+    users: await user.GetUser()
   })
 })
 
-router.post('/api/v1/login', (req, res) => {
+router.post('/api/v1/login', async (req, res) => {
+  let { username, password } = req.body
+  let result = await user.Login(username, password)
+  if (result.code === 400) {
+    return res.status(400).send(result.message)
+  } else if (result.code === 500) {
+    return res.status(500).send(result.message)
+  } else if (result.code === 200) {
+    return res.status(200).send()
+  }
+})
+
+router.post('/api/v1/login2', (req, res) => {
   let { username, password } = req.body
   try {
-    console.log('username', username)
-    console.log('password', password)
     if (!username) {
       return res.status(400).json({
         status: 400,
